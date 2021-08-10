@@ -10,11 +10,13 @@ user_list = [
         "user_name": "First-User",
         "name": "Blake",
         "stats": "Top 0.1%",
+        "id": 10
     },
     {
         "user_name": "Fake",
         "name": "Andrew",
-        "stats": "Top 10%"
+        "stats": "Top 10%",
+        "id": 11
     }
 ]
 
@@ -53,4 +55,18 @@ def register_user():
         # If doesn't contain JSON return error
         else:
             return "Post request must contain JSON",  400
+
+
+#Route to delete user from db/set
+@bp.route('/delete/<user_id>', methods=["DELETE"])
+def delete_user(user_id):
+    if request.method != "DELETE":
+        return "Only delete method allowed for this route", 400
+    else:
+        for i,  user in enumerate(user_list):
+            if user["id"] == user_id:
+                del user_list[i]
+                break;
+        return "user was deleted", 200
+
 

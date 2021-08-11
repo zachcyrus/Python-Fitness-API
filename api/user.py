@@ -52,7 +52,7 @@ def register_user():
 
             return "User Signed Up", 200
 
-        # If doesn't contain JSON return error
+        # If request doesn't contain JSON return error
         else:
             return "Post request must contain JSON",  400
 

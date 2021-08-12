@@ -11,7 +11,7 @@ def hello():
 
 # Importing modules
 from . import user
-from routes import exercises
+from .routes import exercises
 
 
 # Registering blueprint routes

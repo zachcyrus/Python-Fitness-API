@@ -5,6 +5,7 @@ bp = Blueprint('user', __name__, url_prefix='/user')
 
 # Temp list of users while db isn't up yet
 
+
 user_list = [
     {
         "user_name": "First-User",
@@ -37,20 +38,37 @@ def add_user(req):
 @bp.route('/')
 def user_info():
     if request.method == 'GET':
-        return "Welcome to the user api route"
+        return {
+            "all_users":user_list
+            }
 
 #route to register a new user/add to set
 @bp.route('/register')
 def register_user():
     if request.method == 'POST':
+        global_id = 12
+
         # Check if request body contains JSON
+        
         if request.is_json:
 
             user_data = request.get_json()
 
-            add_user(user_data)
+            # Check if request contains the right parameters
 
-            return "User Signed Up", 200
+            if user_data.keys == {"user_name", "stats", "name"}:
+                user_data["id"] = global_id
+
+                global_id += 1
+
+                add_user(user_data)
+
+                return "User Signed Up", 200
+
+            else:
+                return {
+                    "error": "Request is missing the required parameters"
+                }
 
         # If request doesn't contain JSON return error
         else:

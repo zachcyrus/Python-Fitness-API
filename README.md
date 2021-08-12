@@ -17,3 +17,15 @@ This project will attempt to go through multiple stages.
 - PostgreSQL (Maybe Google Sheets)
 - Jenkins
 - AWS
+
+## How to run
+1. Add a .env file to the root of the directory with the following contents
+    ```
+    DEBUG=True
+    FLASK_ENV=development
+    FLASK_APP=api
+    ```
+2. Now in the terminal enter:
+    ```
+    $ flask run
+    ```

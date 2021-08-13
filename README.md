@@ -29,3 +29,9 @@ This project will attempt to go through multiple stages.
     ```
     $ flask run
     ```
+## Running a test
+1. In root of project run the below command to run tests (add -s option to show print statements):
+   ```
+   $ python -m pytest
+   ```
+   

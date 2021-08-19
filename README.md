@@ -25,7 +25,14 @@ This project will attempt to go through multiple stages.
     FLASK_ENV=development
     FLASK_APP=api
     ```
-2. Now in the terminal enter:
+2. Set up a python virtual environment in the root of the cloned repository.
+```
+$ python3 -m venv venv
+$ . venv/bin/activate
+$ pip install requirement.txt
+```
+
+3. Now in the terminal enter:
     ```
     $ flask run
     ```

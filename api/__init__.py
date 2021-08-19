@@ -1,4 +1,4 @@
-import os 
+import os
 
 from flask import Flask
 
@@ -16,7 +16,6 @@ def create_app(testing=False):
     else:
         app.config.from_object("config.DevelopmentConfig")
 
-
     # Index route which will return Hello World.
     @app.route('/')
     def hello():
@@ -26,13 +25,8 @@ def create_app(testing=False):
     from . import user
     from .routes import exercises
 
-
     # Registering blueprint routes
     app.register_blueprint(user.bp)
     app.register_blueprint(exercises.bp)
 
     return app
-
-
-
-

@@ -71,7 +71,7 @@ def register_user():
                 if user_data["user_name"] in [user_entry["user_name"] for user_entry in user_list]:
                     return {
                         "error": "User with that username already exists"
-                    } 
+                    }, 400
                 else:
 
                     user_data["id"] = global_id+1
@@ -102,7 +102,7 @@ def register_user():
 
 
 # Route to delete user from db/set
-@bp.route('/delete/<user_id>', methods=["DELETE"])
+@bp.route('/delete/<int:user_id>', methods=["DELETE"])
 def delete_user(user_id):
     if request.method != "DELETE":
         return {"Only delete method allowed for this route"}, 400
@@ -110,5 +110,10 @@ def delete_user(user_id):
         for i,  user in enumerate(user_list):
             if user["id"] == user_id:
                 del user_list[i]
-                break
-        return {"user was deleted"}, 200
+
+                return {
+                    "success": "user was deleted"
+                }, 200
+        return {
+            "error": "User with that id not found"
+        }, 400

@@ -1,6 +1,8 @@
 import os
 
 from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+
 
 # Application factory
 def create_app(testing=False):

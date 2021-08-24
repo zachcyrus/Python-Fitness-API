@@ -1,6 +1,8 @@
 # File for defining user API endpoint functions
 from flask import (Blueprint, request)
 
+from api.models.models import User
+
 bp = Blueprint('user', __name__, url_prefix='/user')
 
 # Temp list of users while db isn't up yet
@@ -36,6 +38,13 @@ def add_user(req):
     }
 
     user_list.append(new_user)
+
+    saved_user = User(new_user)
+
+    saved_user.save_to_db()
+    
+
+
 
 
 # blueprint routes

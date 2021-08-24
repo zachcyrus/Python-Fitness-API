@@ -42,9 +42,6 @@ def add_user(req):
     saved_user = User(new_user)
 
     saved_user.save_to_db()
-    
-
-
 
 
 # blueprint routes

@@ -49,6 +49,7 @@ def add_user(req):
 @bp.route('/')
 def user_info():
     if request.method == 'GET':
+        print(User.select_all())
         return {
             "all_users": user_list
         }, 200

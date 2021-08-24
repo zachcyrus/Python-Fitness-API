@@ -15,9 +15,14 @@ class User(db.Model):
         self.email = 'fake@gmail.com'
 
     def __repr__(self):
-        return '<User %r>' % self.username
+        return '<User %r>' % self.name
 
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()
         print('Saving to db')
+
+    @staticmethod
+    def select_all():
+        response = User.query.all()
+        return response

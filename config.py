@@ -3,7 +3,7 @@ import os
 class Config(object):
     DEBUG = False
     TESTING = False
-    DATABSE_URI = os.environ['LOCAL_DB_URI']
+    SQLALCHEMY_DATABASE_URI = os.environ['LOCAL_DB_URI']
 
 class DevelopmentConfig(Config):
     ENV = "development"

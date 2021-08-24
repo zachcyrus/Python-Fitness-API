@@ -2,7 +2,10 @@ import os
 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 
+db = SQLAlchemy()
+migrate = Migrate()
 
 # Application factory
 def create_app(testing=False):
@@ -17,6 +20,12 @@ def create_app(testing=False):
 
     else:
         app.config.from_object("config.DevelopmentConfig")
+
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+    db.init_app(app)
+    migrate.init_app(app,db)
+
 
     # Index route which will return Hello World.
     @app.route('/')

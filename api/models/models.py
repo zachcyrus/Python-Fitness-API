@@ -61,7 +61,7 @@ class User(db.Model):
         db.session.commit()
         print('Deleting user with ID:',self.user_id)
 
-class Routines(db.model):
+class Routines(db.Model):
     routine_id = db.Column(db.Integer, primary_key=True)
     routine_name = db.Column(db.String(50), nullable=False)
     routine_description = db.Column(db.String(50), nullable=False)

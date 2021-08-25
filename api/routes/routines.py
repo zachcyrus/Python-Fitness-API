@@ -51,7 +51,6 @@ def add_routines():
         return {
             "success": new_routine["routine_name"] + " was successfully added!",
             "data": new_routine
-
         }, 200
 
 

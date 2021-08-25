@@ -27,17 +27,21 @@ def create_app(testing=False):
     migrate.init_app(app,db)
 
 
-    # Index route which will return Hello World.
-    @app.route('/')
-    def hello():
-        return 'Hello, World!'
+    
 
     # Importing modules
     from . import user
-    from .routes import exercises
+    from .routes import exercises, routines
 
     # Registering blueprint routes
     app.register_blueprint(user.bp)
     app.register_blueprint(exercises.bp)
+    app.register_blueprint(routines.bp)
+
+
+    # Index route which will return Hello World.
+    @app.route('/')
+    def hello():
+        return 'Hello, World!'
 
     return app

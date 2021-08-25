@@ -75,5 +75,16 @@ class Routines(db.model):
         db.session.commit()
         print('Saving to routine to db')
 
+    @staticmethod
+    def get_all_routines():
+        all_routines = Routines.query.all()
+        response_list = []
+        for routine in all_routines:
+            response_list.append({
+                "routine_name": routine.routine_name,
+                "routine_description": routine.routine_description
+            })
+        return response_list
+
     def __repr__(self):
         return f"{self.__class__.__name__} {self.routine_name}"

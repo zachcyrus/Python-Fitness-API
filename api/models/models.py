@@ -78,12 +78,15 @@ class Routines(db.Model):
     @staticmethod
     def get_all_routines():
         all_routines = Routines.query.all()
+        print(all_routines)
         response_list = []
         for routine in all_routines:
             response_list.append({
                 "routine_name": routine.routine_name,
                 "routine_description": routine.routine_description
             })
+
+        print(response_list)
         return response_list
 
     def __repr__(self):

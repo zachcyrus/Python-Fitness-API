@@ -20,6 +20,7 @@ def add_routine(req):
 @bp.route('/', methods=["GET"])
 def get_routines():
     # possibly return all user submitted routines
+    print(Routines.get_all_routines())
     try:
         return {
             "all_routines": Routines.get_all_routines()

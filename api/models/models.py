@@ -1,7 +1,8 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
-from api import db
+from api import db, user
+import json
 
 
 class User(db.Model):
@@ -24,5 +25,14 @@ class User(db.Model):
 
     @staticmethod
     def select_all():
-        response = User.query.all()
+        user_query = User.query.all()
+        response = []
+        #returns an array of all User objects
+        for user_obj in user_query:
+            response.append({
+                'user_id':user_obj.user_id,
+                'name':user_obj.name,
+                'email':user_obj.email
+            })
+
         return response

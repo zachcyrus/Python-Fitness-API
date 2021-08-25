@@ -1,5 +1,5 @@
 # File for defining user API endpoint functions
-from flask import (Blueprint, request)
+from flask import (Blueprint, request, jsonify)
 
 from api.models.models import User
 
@@ -49,9 +49,9 @@ def add_user(req):
 @bp.route('/')
 def user_info():
     if request.method == 'GET':
-        print(User.select_all())
+        user_objects = User.select_all()
         return {
-            "all_users": user_list
+            "all_users": user_objects
         }, 200
 
 # route to register a new user/add to set

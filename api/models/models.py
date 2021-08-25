@@ -47,3 +47,17 @@ class User(db.Model):
         else:
             return True
 
+    @staticmethod
+    def find_user_by_id(id):
+        found_user = User.query.filter_by(user_id=id).first()
+        if found_user is None:
+            return False
+
+        else:
+            return True
+
+    def delete_user(self,id):
+        db.session.delete(self)
+        db.session.commit()
+        print('Deleting user with ID:',id)
+

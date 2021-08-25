@@ -1,5 +1,5 @@
 # File for defining user API endpoint functions
-from flask import (Blueprint, request, jsonify)
+from flask import (Blueprint, request)
 
 from api.models.models import User
 
@@ -13,7 +13,6 @@ def add_user(req):
     new_user = {
         "user_name": req["user_name"],
         "name": req["name"],
-        "stats": req["stats"],
         "email": req["email"]
     }
 
@@ -49,7 +48,7 @@ def register_user():
 
             # Check if request contains the right parameters
 
-            if user_data.keys() == {"user_name", "stats", "name"}:
+            if user_data.keys() == {"user_name", "email", "name"}:
 
                 # Check if someone with that user_name already exists
 

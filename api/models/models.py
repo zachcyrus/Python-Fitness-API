@@ -1,8 +1,8 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
-from api import db, user
-import json
+from api import db
+
 
 
 class User(db.Model):
@@ -61,3 +61,19 @@ class User(db.Model):
         db.session.commit()
         print('Deleting user with ID:',self.user_id)
 
+class Routines(db.model):
+    routine_id = db.Column(db.Integer, primary_key=True)
+    routine_name = db.Column(db.String(50), nullable=False)
+    routine_description = db.Column(db.String(50), nullable=False)
+
+    def __init__(self,data):
+        self.routine_name = data.get('routine_name')
+        self.routine_description = data.get('routine_description')
+
+    def save_routine(self):
+        db.session.add(self)
+        db.session.commit()
+        print('Saving to routine to db')
+
+    def __repr__(self):
+        return f"{self.__class__.__name__} {self.routine_name}"

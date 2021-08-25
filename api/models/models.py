@@ -54,10 +54,10 @@ class User(db.Model):
             return False
 
         else:
-            return True
+            return found_user
 
-    def delete_user(self,id):
+    def delete_user(self):
         db.session.delete(self)
         db.session.commit()
-        print('Deleting user with ID:',id)
+        print('Deleting user with ID:',self.user_id)
 

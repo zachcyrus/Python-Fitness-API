@@ -13,6 +13,7 @@ class User(db.Model):
 
     def __init__(self,data):
         self.name = data.get('name')
+        self.user_name = data.get('user_name')
         self.email = data.get('email')
 
     def __repr__(self):
@@ -31,6 +32,7 @@ class User(db.Model):
         for user_obj in user_query:
             response.append({
                 'user_id':user_obj.user_id,
+                'user_name':user_obj.user_name,
                 'name':user_obj.name,
                 'email':user_obj.email
             })

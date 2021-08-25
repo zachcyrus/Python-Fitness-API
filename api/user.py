@@ -5,27 +5,7 @@ from api.models.models import User
 
 bp = Blueprint('user', __name__, url_prefix='/user')
 
-# Temp list of users while db isn't up yet
-
-
-user_list = [
-    {
-        "user_name": "First-User",
-        "name": "Blake",
-        "stats": "Top 0.1%",
-        "id": 10
-    },
-    {
-        "user_name": "Fake",
-        "name": "Andrew",
-        "stats": "Top 10%",
-        "id": 11
-    }
-]
-
-global_id = 12
-
-# function to add a user to user_list
+# function to add a user to user_list and save to db.
 
 
 def add_user(req):
@@ -34,10 +14,8 @@ def add_user(req):
         "user_name": req["user_name"],
         "name": req["name"],
         "stats": req["stats"],
-        "id": req["id"]
+        "email": req["email"]
     }
-
-    user_list.append(new_user)
 
     saved_user = User(new_user)
 
@@ -49,9 +27,9 @@ def add_user(req):
 @bp.route('/')
 def user_info():
     if request.method == 'GET':
-        user_objects = User.select_all()
+        all_users = User.select_all()
         return {
-            "all_users": user_objects
+            "all_users": all_users
         }, 200
 
 # route to register a new user/add to set
@@ -75,15 +53,11 @@ def register_user():
 
                 # Check if someone with that user_name already exists
 
-                if user_data["user_name"] in [user_entry["user_name"] for user_entry in user_list]:
+                if User.find_username(user_data["user_name"]):
                     return {
                         "error": "User with that username already exists"
                     }, 400
                 else:
-
-                    user_data["id"] = global_id+1
-
-                    global_id += 1
 
                     add_user(user_data)
 

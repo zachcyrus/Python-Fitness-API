@@ -7,13 +7,13 @@ import json
 
 class User(db.Model):
     user_id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50))
-    email = db.Column(db.String(50))
+    user_name = db.Column(db.String(50), unique=True, nullable=False)
+    name = db.Column(db.String(50), nullable=False)
+    email = db.Column(db.String(50), nullable=False)
 
     def __init__(self,data):
         self.name = data.get('name')
-        self.user_id = data.get('id')
-        self.email = 'fake@gmail.com'
+        self.email = data.get('email')
 
     def __repr__(self):
         return '<User %r>' % self.name
@@ -36,3 +36,12 @@ class User(db.Model):
             })
 
         return response
+
+    @staticmethod
+    def find_username(username):
+        found_user = User.query.filter_by(user_name=username).first()
+        if found_user is None:
+            return False
+        else:
+            return True
+

@@ -87,13 +87,14 @@ def delete_user(user_id):
     if request.method != "DELETE":
         return {"Only delete method allowed for this route"}, 400
     else:
-        for i,  user in enumerate(user_list):
-            if user["id"] == user_id:
-                del user_list[i]
+        user_to_delete = User.find_user_by_id(user_id)
+        if user_to_delete:
+            user_to_delete.delete_user()
+            return {
+                "success":"Deleted User"
+            }, 200
 
-                return {
-                    "success": "user was deleted"
-                }, 200
-        return {
-            "error": "User with that id not found"
-        }, 400
+        else:
+            return {
+                "error": "User with that id not found"
+            }, 400

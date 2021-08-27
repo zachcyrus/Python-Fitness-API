@@ -73,7 +73,7 @@ class Routines(db.Model):
     def save_routine(self):
         db.session.add(self)
         db.session.commit()
-        print('Saving to routine to db')
+        print('Saving routine to db')
 
     @staticmethod
     def get_all_routines():
@@ -89,3 +89,32 @@ class Routines(db.Model):
 
     def __repr__(self):
         return f"{self.__class__.__name__} {self.routine_name}"
+
+class Exercises(db.model):
+    exercise_id = db.Column(db.Integer, primary_key=True)
+    exercise_name = db.Column(db.String(50), nullable=False)
+    exercise_description = db.Column(db.String(50), nullable=False)
+
+    def __init__(self,data):
+        self.exercise_name = data.get("exercise_name")
+        self.exercise_description = data.get("exercise_description")
+
+    def save_exercise(self):
+        db.session.add(self)
+        db.session.commit()
+        print('Saving exercise to db')
+
+    @staticmethod
+    def get_all_exercises():
+        all_exercises = Exercises.query.all()
+        response_list = []
+        for exercise in all_exercises:
+            response_list.append({
+                "exercise_name": exercise.exercise_name,
+                "exercise_description": exercise.exercise_description
+            })
+
+        return response_list
+
+    def __repr__(self):
+        return f"{self.__class__.__name__} {self.exercise_name}"

@@ -30,8 +30,7 @@ def create_app(testing=False):
     
 
     # Importing modules
-    from . import user
-    from .routes import exercises, routines
+    from .routes import exercises, routines, user
 
     # Registering blueprint routes
     app.register_blueprint(user.bp)

@@ -100,6 +100,7 @@ class Exercises(db.Model):
     exercise_name = db.Column(db.String(50), nullable=False)
     exercise_description = db.Column(db.String(50), nullable=False)
     user_routines = db.relationship('User_Routines', backref='exercises', lazy=True)
+    routine_exercises = db.relationship('Routine_Exercises', backref='exercises_routine', lazy=True)
 
 
     def __init__(self,data):
@@ -127,10 +128,11 @@ class Exercises(db.Model):
         return f"{self.__class__.__name__} {self.exercise_name}"
 
 class User_Routines(db.Model):
+    __tablename__ = 'user_routines'
     user_routine_id = db.Column(db.Integer(), primary_key=True)
     # relationship with routines and user tables
-    user_id = db.Column(db.Integer(), db.ForeignKey('User.user_id'), nullable=False)
-    routine_id = db.Column(db.Integer(), db.ForeignKey('Routines.routine_id'), nullable=False)
+    user_id = db.Column(db.Integer(), db.ForeignKey('user.user_id'), nullable=False)
+    routine_id = db.Column(db.Integer(), db.ForeignKey('routines.routine_id'), nullable=False)
 
     def save_user_routine(self):
         db.session.add(self)
@@ -138,9 +140,11 @@ class User_Routines(db.Model):
         print('Saving User Routines to db')
 
 class Routine_Exercises(db.Model):
+    __tablename__ = 'routine_exercises'
     routine_exercise_id = db.Column(db.Integer(), primary_key=True)
-    exercise_id = db.Column(db.Integer(), db.ForeignKey('Exercises.user_id'), nullable=False)
-    routine_id = db.Column(db.Integer(), db.ForeignKey('Routines.routine_id'), nullable=False) 
+    exercise_id = db.Column(db.Integer(), db.ForeignKey('exercises.exercise_id'), nullable=False)
+    routine_id = db.Column(db.Integer(), db.ForeignKey('routines.routine_id'), nullable=False) 
+    user_routine_exercises = db.relationship('User_Routines_Exercises', backref='exercises', lazy=True)
 
     def save_routine_exercises(self):
         db.session.add(self)
@@ -150,8 +154,8 @@ class Routine_Exercises(db.Model):
 # This table is meant to show the exercises for a particular routine chosen by a user.
 class User_Routine_Exercises(db.Model):
     personal_routine_exercise_id = db.Column(db.Integer(), primary_key=True)
-    user_routine_id = db.Column(db.Integer(), db.ForeignKey('User_Routines.user_routine_id'))
-    routine_exercise_id = db.Column(db.Integer(), db.ForeignKey('Routine_Exercises.routine_exercise_id'))
+    user_routine_id = db.Column(db.Integer(), db.ForeignKey('user_routines.user_routine_id'))
+    routine_exercise_id = db.Column(db.Integer(), db.ForeignKey('routine_exercises.routine_exercise_id'))
 
     def save_user_routine_exercises(self):
         db.session.add(self)

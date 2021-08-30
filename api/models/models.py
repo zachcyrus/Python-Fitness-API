@@ -139,7 +139,7 @@ class User_Routines(db.Model):
 
 class Routine_Exercises(db.Model):
     routine_exercise_id = db.Column(db.Integer(), primary_key=True)
-    exercise_id = db.Column(db.Integer(), db.ForeignKey('Exercise.user_id'), nullable=False)
+    exercise_id = db.Column(db.Integer(), db.ForeignKey('Exercises.user_id'), nullable=False)
     routine_id = db.Column(db.Integer(), db.ForeignKey('Routines.routine_id'), nullable=False) 
 
     def save_routine_exercises(self):

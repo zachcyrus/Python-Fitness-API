@@ -12,7 +12,7 @@ class User(db.Model):
     name = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(50), nullable=False)
     routines = db.relationship('User_Routines', backref='user', lazy=True)
-    password = db.Column(db.String(), nullable=False)
+    password = db.Column(db.String(100), nullable=False)
 
 
     def __init__(self,data):

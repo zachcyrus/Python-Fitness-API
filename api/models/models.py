@@ -1,6 +1,8 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import backref
+from werkzeug.security import check_password_hash, generate_password_hash
+
 
 from api import db
 
@@ -19,7 +21,7 @@ class User(db.Model):
         self.name = data.get('name')
         self.user_name = data.get('user_name')
         self.email = data.get('email')
-        self.password = data.get('password')
+        self.password = generate_password_hash(data.get('password'), method='sha256')
 
     def __repr__(self):
         return '<User %r>' % self.name

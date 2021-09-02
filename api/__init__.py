@@ -30,12 +30,13 @@ def create_app(testing=False):
     
 
     # Importing modules
-    from .routes import exercises, routines, user
+    from .routes import exercises, routines, user, auth
 
     # Registering blueprint routes
     app.register_blueprint(user.bp)
     app.register_blueprint(exercises.bp)
     app.register_blueprint(routines.bp)
+    app.register_blueprint(auth.bp)
 
 
     # Index route which will return Hello World.

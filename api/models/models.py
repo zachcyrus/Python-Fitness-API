@@ -12,12 +12,14 @@ class User(db.Model):
     name = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(50), nullable=False)
     routines = db.relationship('User_Routines', backref='user', lazy=True)
+    password = db.Column(db.String(), nullable=False)
 
 
     def __init__(self,data):
         self.name = data.get('name')
         self.user_name = data.get('user_name')
         self.email = data.get('email')
+        self.password = data.get('password')
 
     def __repr__(self):
         return '<User %r>' % self.name
@@ -142,6 +144,7 @@ class User_Routines(db.Model):
 class Routine_Exercises(db.Model):
     __tablename__ = 'routine_exercises'
     routine_exercise_id = db.Column(db.Integer(), primary_key=True)
+    reps = db.Column(db.Integer(), nullable=False)
     exercise_id = db.Column(db.Integer(), db.ForeignKey('exercises.exercise_id'), nullable=False)
     routine_id = db.Column(db.Integer(), db.ForeignKey('routines.routine_id'), nullable=False) 
     user_routine_exercises = db.relationship('User_Routines_Exercises', backref='exercises', lazy=True)

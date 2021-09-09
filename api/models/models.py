@@ -103,7 +103,7 @@ class Routines(db.Model):
     routine_id = db.Column(db.Integer, primary_key=True)
     routine_name = db.Column(db.String(50), nullable=False)
     routine_description = db.Column(db.String(50), nullable=False)
-    routines = db.relationship('User_Routines', backref='routines', lazy=True)
+    routines = db.relationship('User_Routines', cascade="all, delete-orphan", backref='routines', lazy=True)
     routine_exercises = db.relationship('Routine_Exercises', cascade="all, delete-orphan", backref='routines_exercises', lazy=True)
 
     def __init__(self,data):

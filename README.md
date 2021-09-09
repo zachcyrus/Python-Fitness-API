@@ -122,6 +122,17 @@ Which is an extension of flask that allows for SQLAlchemy support thus allowing 
     - Able to retrieve all exercises associated with a particular routine
     - Ability to delete a routine and have that routine deletion cascade down to other tables
 
+## Troubleshooting Elastic Beanstalk Deployment
+1. Make sure your requirements.txt file is always up to date. I forgot to update my requirements file with new packages that I installed thus resulting in elastic bean stalk failing. This was only fixed after digged through the logs.
+    ![Requirements logs](out_of_date_requirements.png)
+
+2. If you're using environmental variables make sure to set those in the elastic beanstalk environment configuration. 
+
+3. Also if you're using psycopg2 it may result in an error, thus requiring you to install the binary. 
+    ![Error with pgconfig](psycopg2-error.png)
+
+4. Make sure application.py is in root of the directory.
+
 
 ## How to run
 1. Add a .env file to the root of the directory with the following contents

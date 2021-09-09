@@ -48,6 +48,41 @@ def get_user_routines(user_id):
             "user_routine":current_user.get_routines()
         },200
 
+#get specific routine with exercises for a particular user 
+@bp.route('/<int:user_id>/<string:routine_name>', methods=["GET"])
+def get_user_routine_exercises(user_id, routine_name):
+    current_user = User.find_user_by_id(user_id)
+
+    if current_user is False:
+        return {
+            "error": "User with that ID not found"
+        }, 400
+
+    elif current_user.find_routine(routine_name) is False:
+
+        return {
+                "error": "Routine not found associated with that user_id"
+            }, 400
+
+    else:
+        current_user_routine = current_user.find_routine(routine_name)
+
+
+        exercises_in_routine = current_user_routine.get_exercises_in_routine()
+
+
+        print(exercises_in_routine)
+
+        return {
+            "routine_name":current_user_routine.routine_name,
+            "routine_description": current_user_routine.routine_description,
+            "exercises_list": exercises_in_routine
+        }, 200
+
+
+
+
+
 
 
 @bp.route('/add', methods=["POST"])

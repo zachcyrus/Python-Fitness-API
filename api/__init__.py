@@ -39,9 +39,9 @@ def create_app(testing=False):
     app.register_blueprint(auth.bp)
 
 
-    # Index route which will return Hello World.
+    # Index route which will return name of API
     @app.route('/')
     def hello():
-        return 'Hello, World!'
+        return 'Python Fitness API'
 
     return app

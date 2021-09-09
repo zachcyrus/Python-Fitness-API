@@ -21,7 +21,7 @@ class User(db.Model):
         self.name = data.get('name')
         self.user_name = data.get('user_name')
         self.email = data.get('email')
-        self.password = generate_password_hash(data.get('password'), method='sha256')
+        self.password = data.get('password')
 
     def __repr__(self):
         return '<User %r>' % self.name
@@ -83,6 +83,7 @@ class Routines(db.Model):
         db.session.add(self)
         db.session.commit()
         print('Saving routine to db')
+        return self.routine_id
 
     @staticmethod
     def get_all_routines():
@@ -103,7 +104,6 @@ class Exercises(db.Model):
     exercise_id = db.Column(db.Integer, primary_key=True)
     exercise_name = db.Column(db.String(50), nullable=False)
     exercise_description = db.Column(db.String(50), nullable=False)
-    user_routines = db.relationship('User_Routines', backref='exercises', lazy=True)
     routine_exercises = db.relationship('Routine_Exercises', backref='exercises_routine', lazy=True)
 
 
@@ -149,7 +149,7 @@ class Routine_Exercises(db.Model):
     reps = db.Column(db.Integer(), nullable=False)
     exercise_id = db.Column(db.Integer(), db.ForeignKey('exercises.exercise_id'), nullable=False)
     routine_id = db.Column(db.Integer(), db.ForeignKey('routines.routine_id'), nullable=False) 
-    user_routine_exercises = db.relationship('User_Routines_Exercises', backref='exercises', lazy=True)
+    user_routine_exercises = db.relationship('User_Routine_Exercises', backref='exercises', lazy=True)
 
     def save_routine_exercises(self):
         db.session.add(self)

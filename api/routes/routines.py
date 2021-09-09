@@ -3,6 +3,8 @@
 from operator import add
 from flask import (Blueprint, request)
 from api.models.models import Routines, User_Routines, User
+from api import db
+
 
 bp = Blueprint('routines', __name__, url_prefix='/routines')
 
@@ -22,7 +24,6 @@ def add_routine(req):
 @bp.route('/', methods=["GET"])
 def get_routines():
     # possibly return all user submitted routines
-    print(Routines.get_all_routines())
     try:
         return {
             "all_routines": Routines.get_all_routines()
@@ -70,9 +71,6 @@ def get_user_routine_exercises(user_id, routine_name):
 
         exercises_in_routine = current_user_routine.get_exercises_in_routine()
 
-
-        print(exercises_in_routine)
-
         return {
             "routine_name":current_user_routine.routine_name,
             "routine_description": current_user_routine.routine_description,
@@ -84,7 +82,7 @@ def get_user_routine_exercises(user_id, routine_name):
 
 
 
-
+#deprecated
 @bp.route('/add', methods=["POST"])
 def add_routines():
     if request.method != 'POST' or not(request.is_json):
@@ -171,7 +169,27 @@ def remove_routine(user_id,routine_name):
     else:
         current_user = User.find_user_by_id(user_id)
 
-        return {
-            "user":user_id,
-            "user_routine":current_user.routines
-        },200
+        try:
+            if current_user.find_routine(routine_name) is False:
+                return {
+                    "error": "No routine associated with that user"
+                }, 400
+
+            else:
+                routine_to_delete = current_user.find_routine(routine_name)
+
+                print(routine_to_delete)
+
+                routine_to_delete.delete_routine()
+
+                return {
+                    "success": "Deleted routine"
+                },200
+
+        except Exception as e:
+            return {
+                "error": "Error deleting routine please try again",
+                "details":str(e)
+            },400
+
+        

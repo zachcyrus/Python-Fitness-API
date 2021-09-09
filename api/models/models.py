@@ -1,3 +1,4 @@
+from os import stat
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import backref
@@ -103,7 +104,7 @@ class Routines(db.Model):
     routine_name = db.Column(db.String(50), nullable=False)
     routine_description = db.Column(db.String(50), nullable=False)
     routines = db.relationship('User_Routines', backref='routines', lazy=True)
-    routine_exercises = db.relationship('Routine_Exercises', backref='routines_exercises', lazy=True)
+    routine_exercises = db.relationship('Routine_Exercises', cascade="all, delete-orphan", backref='routines_exercises', lazy=True)
 
     def __init__(self,data):
         self.routine_name = data.get('routine_name')
@@ -114,6 +115,11 @@ class Routines(db.Model):
         db.session.commit()
         print('Saving routine to db')
         return self.routine_id
+
+
+    def delete_routine(self):
+        db.session.delete(self)
+        db.session.commit()
 
     @staticmethod
     def get_all_routines():

@@ -13,8 +13,7 @@ Mako==1.1.5
 MarkupSafe==2.0.1
 packaging==21.0
 pluggy==0.13.1
-psycopg2==2.9.1
-psycopg2-binary==2.9.1
+psycopg2-binary==2.8.5
 py==1.10.0
 pycodestyle==2.7.0
 pyparsing==2.4.7

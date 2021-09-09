@@ -6,7 +6,7 @@ if os.environ['LOCAL_DB_URI'] is None:
 class Config(object):
     DEBUG = False
     TESTING = False
-    SQLALCHEMY_DATABASE_URI = os.environ['LOCAL_DB_URI']
+    SQLALCHEMY_DATABASE_URI = 'fakeurl'
 
 class DevelopmentConfig(Config):
     ENV = "development"

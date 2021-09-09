@@ -85,6 +85,18 @@ class User(db.Model):
 
         return response
 
+    def find_routine(self,routine_name):
+        routines_list = self.routines
+
+        for routine in routines_list:
+            routine_row = Routines.find_routine_by_id(routine.routine_id)
+
+            if routine_row.routine_name == routine_name:
+                return routine_row
+        
+        
+        return False
+
 
 class Routines(db.Model):
     routine_id = db.Column(db.Integer, primary_key=True)

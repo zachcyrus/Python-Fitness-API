@@ -15,7 +15,7 @@ def user_sign_up():
         return {
             "error": "Must be a POST request and contain JSON"
         },400
-    elif ('username' or 'password' or 'email') not in request.json:
+    elif ('user_name' or 'password' or 'email' or 'name') not in request.json:
         return {
             "error": "Request body must contain username, password, and email"
         }, 400
@@ -24,7 +24,7 @@ def user_sign_up():
         
 
         try:
-            new_user = request.is_json
+            new_user = request.json
 
             saved_user = User(new_user)
 
@@ -35,9 +35,10 @@ def user_sign_up():
                 "new_user": new_user
             }, 200
             
-        except :
+        except Exception as e:
             return {
-                "error": "Error saving user to database"
+                "error": "Error saving user to database",
+                "details":e
             }, 400
 
         

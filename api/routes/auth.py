@@ -32,7 +32,8 @@ def user_sign_up():
 
             return {
                 "success": "New User signed up",
-                "new_user": new_user
+                "new_user": new_user,
+                "user_id": saved_user.user_id
             }, 200
             
         except Exception as e:

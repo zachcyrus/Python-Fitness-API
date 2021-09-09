@@ -1,5 +1,8 @@
 import os
 
+if os.environ['LOCAL_DB_URI'] is None:
+    os.environ['LOCAL_DB_URI'] = 'fakeurl'
+
 class Config(object):
     DEBUG = False
     TESTING = False

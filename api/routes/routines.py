@@ -1,7 +1,8 @@
 # Route for defining routines endpoints
 
+from operator import add
 from flask import (Blueprint, request)
-from api.models.models import Routines
+from api.models.models import Routines, User_Routines, User
 
 bp = Blueprint('routines', __name__, url_prefix='/routines')
 
@@ -13,7 +14,8 @@ def add_routine(req):
 
     try:
         saved_routine = Routines(routine_dict)
-        saved_routine.save_routine()
+        current_routine_id = saved_routine.save_routine()
+        return current_routine_id
     except:
         return 'Error saving'
 
@@ -52,6 +54,54 @@ def add_routines():
             "success": new_routine["routine_name"] + " was successfully added!",
             "data": new_routine
         }, 200
+
+#Route for addding a routine to a particular user
+@bp.route('/add/<int:user_id>', methods=["POST"])
+def add_user_routine(user_id):
+    if request.method != 'POST' or not(request.is_json):
+        return {
+            "error": "Request must be a POST method, and request must contain JSON"
+        }, 400
+
+    elif ('routine_description' or "routine_name") not in request.json:
+        return {
+            "error": "Request must contain a routine_description and routine_name"
+        }, 400
+
+    
+    # Check if user exists
+
+    elif User.find_user_by_id(user_id) == False:
+        return {
+            "error": "User with that id not found "
+        }, 400
+
+    else:
+        user_routine = request.json
+
+        # Make a routine table 
+
+        try:
+            # Saving the routine id from the newly created routine
+            created_routine_id = add_routine(user_routine)
+
+            # Add the routine to the user_routine Table 
+            # 1. Add the routine to the user instance with that id 
+
+            new_selected_user_routine = User_Routines(user_id=user_id,routine_id=created_routine_id)
+
+            new_selected_user_routine.save_user_routine()
+
+            return {
+                "success":f"Routine added to {user_id}",
+                "routine": user_routine
+            }, 200
+
+        except Exception as e:
+            return {
+                "error": "Error creating routine table please try again",
+                "details":e
+            },400
 
 
 @bp.route('/remove/<int:routine_id>', methods=["DELETE"])

@@ -1,16 +1,5 @@
 # File for defining exercise API endpoint functions
 
-# Routes to add: route to add an exercise to global list, route to remove an exercise 
-
-# temp list of exercises
-
-exercise_list = [
-    "Bicep Curls",
-    "Squats",
-    "Bench Press"
-]
-
-
 from flask import (Blueprint, request)
 from api.models.models import User, Routine_Exercises, Exercises
 

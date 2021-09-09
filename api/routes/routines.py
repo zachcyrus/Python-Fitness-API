@@ -32,6 +32,23 @@ def get_routines():
             "error": "Error occurred retrieving data from DB"
         }, 400
 
+#get routines for specific user 
+@bp.route('/<int:user_id>', methods=["GET"])
+def get_user_routines(user_id):
+    current_user = User.find_user_by_id(user_id)
+
+    if current_user is False:
+        return {
+            "error": "User with that ID not found"
+        }, 400
+
+    else:
+        return {
+            "user":user_id,
+            "user_routine":current_user.get_routines()
+        },200
+
+
 
 @bp.route('/add', methods=["POST"])
 def add_routines():
@@ -104,21 +121,22 @@ def add_user_routine(user_id):
             },400
 
 
-@bp.route('/remove/<int:routine_id>', methods=["DELETE"])
-def remove_routine(routine_id):
+@bp.route('/remove/<int:user_id>/<string:routine_name>', methods=["DELETE"])
+def remove_routine(user_id,routine_name):
     if request.method != "DELETE":
         return {
             "error": "This is a delete only route"
-        }
-    else:
-        # have to loop through array of dicts
-        for index, routine in enumerate(list(user_routines)):
-            if routine_id == routine["routine_id"]:
-                del user_routines[index]
-                return {
-                    "success": "Resource was successfully deleted"
-                }, 200
-        
-        return {
-            "error": "Routine id was not found"
         }, 400
+
+    elif User.find_user_by_id(user_id) is False:
+        return {
+            "error": "User with that id not found"
+        },400
+
+    else:
+        current_user = User.find_user_by_id(user_id)
+
+        return {
+            "user":user_id,
+            "user_routine":current_user.routines
+        },200

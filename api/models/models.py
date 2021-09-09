@@ -68,6 +68,24 @@ class User(db.Model):
         db.session.commit()
         print('Deleting user with ID:',self.user_id)
 
+    def get_routines(self):
+        routines_list = self.routines
+
+        print(routines_list)
+
+        response = []
+
+        for routine in routines_list:
+            routine_row = Routines.find_routine_by_id(routine.routine_id)
+            response.append({
+                'routine_id':routine.routine_id,
+                'routine_name':routine_row.routine_name,
+                'routine_description':routine_row.routine_description
+            })
+
+        return response
+
+
 class Routines(db.Model):
     routine_id = db.Column(db.Integer, primary_key=True)
     routine_name = db.Column(db.String(50), nullable=False)
@@ -96,6 +114,18 @@ class Routines(db.Model):
             })
 
         return response_list
+
+    @staticmethod
+    def find_routine_by_id(id):
+        found_routine = Routines.query.filter_by(routine_id=id).first()
+
+        if found_routine is None:
+            return False
+
+        else:
+            return found_routine
+
+
 
     def __repr__(self):
         return f"{self.__class__.__name__} {self.routine_name}"

@@ -22,7 +22,7 @@ def get_exercises():
 
 
 # Route to add exercise to a particular routine
-@bp.route('/add/<int:user_id/<string:routine_name>', methods=["POST"])
+@bp.route('/add/<int:user_id>/<string:routine_name>', methods=["POST"])
 def add_exercise_routine(user_id,routine_name):
 
     if request.method != 'POST' or not(request.is_json):
@@ -43,6 +43,7 @@ def add_exercise_routine(user_id,routine_name):
     # Find routine with that name associated with that user
 
     else:
+
         current_user = User.find_user_by_id(user_id)
 
         current_user_routine = current_user.find_routine(routine_name)

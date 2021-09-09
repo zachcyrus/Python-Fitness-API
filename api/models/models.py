@@ -137,6 +137,23 @@ class Routines(db.Model):
         else:
             return found_routine
 
+    def get_exercises_in_routine(self):
+        all_exercises = self.routine_exercises
+
+        exercise_list = []
+
+        for exercise in all_exercises:
+            exercise_row = Exercises.find_exercise_by_id(exercise.exercise_id)
+            exercise_list.append({
+                "exercise_name": exercise_row.exercise_name,
+                "exercise_description": exercise_row.exercise_description,
+                "reps": exercise.reps
+
+            })
+
+        return exercise_list
+        
+
 
 
     def __repr__(self):
@@ -169,6 +186,17 @@ class Exercises(db.Model):
             })
 
         return response_list
+
+    @staticmethod
+    def find_exercise_by_id(id):
+        found_exercise = Exercises.query.filter_by(exercise_id=id).first()
+
+        if found_exercise is None:
+            return False
+
+        else:
+            return found_exercise
+
 
     def __repr__(self):
         return f"{self.__class__.__name__} {self.exercise_name}"

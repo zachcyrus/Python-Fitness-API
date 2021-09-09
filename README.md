@@ -58,8 +58,69 @@ Which is an extension of flask that allows for SQLAlchemy support thus allowing 
             return response
     ```
 
-4. Once my database tables are declared I begun working on the actual routes through with Python flask. 
+4. Once my database tables are declared I begun working on the actual routes with Python flask. 
 
+5. Python flask allows for a modular project environment through the use of blueprints. I defined my routes through the use of blueprints. 
+    ```
+    # api/routes/routines.py
+    bp = Blueprint('routines', __name__, url_prefix='/routines')
+
+    def add_routine(req):
+        routine_dict = {
+            "routine_name": req["routine_name"],
+            "routine_description": req["routine_description"]
+        }
+
+        try:
+            saved_routine = Routines(routine_dict)
+            current_routine_id = saved_routine.save_routine()
+            return current_routine_id
+        except:
+            return 'Error saving'
+
+    @bp.route('/', methods=["GET"])
+    def get_routines():
+        # possibly return all user submitted routines
+        try:
+            return {
+                "all_routines": Routines.get_all_routines()
+            }, 200
+        except:
+            return {
+                "error": "Error occurred retrieving data from DB"
+            }, 400
+
+    #get routines for specific user 
+    @bp.route('/<int:user_id>', methods=["GET"])
+    def get_user_routines(user_id):
+        current_user = User.find_user_by_id(user_id)
+
+        if current_user is False:
+            return {
+                "error": "User with that ID not found"
+            }, 400
+
+        else:
+            return {
+                "user":user_id,
+                "user_routine":current_user.get_routines()
+            },200
+
+    #get specific routine with exercises for a particular user 
+    ```
+
+6. After a blueprint is defined you can import it into the main python flask application file.
+    ```
+    # api/__init__.py
+    app.register_blueprint(routines.bp)
+
+    ```
+7. Through the use of flask blueprints and flask SQLAlchemy I was able to create API routes that allows for:
+    - The sign up of new users 
+    - Ability to create a new routine associated with a particular user 
+    - Able to add exercises to a particular routine containing exercise name, description, and amount of reps
+    - Able to retrieve all exercises associated with a particular routine
+    - Ability to delete a routine and have that routine deletion cascade down to other tables
 
 
 ## How to run

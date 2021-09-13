@@ -7,6 +7,22 @@ from flask_restx import  Resource, Namespace, fields
 
 exercise = Namespace('Exercise', 'Exercises route for users')
 
+exercise_model = exercise.model(
+    "Added Exercise Model",
+    {
+        "exercise_name": fields.String(
+            required=True,
+            description='Name of exercise',
+            help="Name cannot be blank"
+        ),
+        "exercise_description": fields.String(
+            required=True,
+            description='Description of exercise',
+            help="Description cannot be empty"
+        )
+    }
+)
+
 @exercise.route('/')
 class AllExercises(Resource):
     def get(self):
@@ -17,7 +33,7 @@ class AllExercises(Resource):
 
 @exercise.route('/add/<int:user_id>/<string:routine_name>')
 class AddExercise(Resource):
-
+    @exercise.expect(exercise_model)
     def post(self,user_id,routine_name):
 
         if request.method != 'POST' or not(request.is_json):

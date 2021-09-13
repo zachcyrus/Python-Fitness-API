@@ -36,10 +36,6 @@ user_model = auth.model(
 
 @auth.route('/signup')
 class Signup(Resource):
-    def get(self):
-        return {
-            "testing":"route"
-        }, 200
 
     @auth.expect(user_model)
     def post(self):

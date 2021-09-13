@@ -10,3 +10,6 @@ api = Api(api_bp,title='Python Fitness API', description="Python API meant to sh
 
 from api.routes.auth import auth
 api.add_namespace(auth,path='/auth')
+
+from api.routes.exercises import exercise
+api.add_namespace(exercise,path='/exercise')

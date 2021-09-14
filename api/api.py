@@ -1,3 +1,4 @@
+from os import path
 from flask import Blueprint
 from flask_restx import Api
 
@@ -13,3 +14,6 @@ api.add_namespace(auth,path='/auth')
 
 from api.routes.exercises import exercise
 api.add_namespace(exercise,path='/exercise')
+
+from api.routes.routines import routines
+api.add_namespace(routines,path='/routines')

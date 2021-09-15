@@ -70,3 +70,4 @@ class Signup(Resource):
                     "error": "Error saving user to database",
                     "details":e
                 }, 400
+

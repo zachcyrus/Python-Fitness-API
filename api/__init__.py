@@ -24,6 +24,9 @@ def create_app(testing=False):
 
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+    db.init_app(app)
+    migrate.init_app(app,db)
+
 
     # importing api blueprint
 
@@ -31,7 +34,6 @@ def create_app(testing=False):
     app.register_blueprint(api_bp, url_prefix='/api')
 
 
-    db.init_app(app)
-    migrate.init_app(app,db)
+    
 
     return app

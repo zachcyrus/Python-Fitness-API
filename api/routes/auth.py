@@ -1,4 +1,3 @@
-from werkzeug.security import check_password_hash
 from flask import Blueprint, request
 from flask_restx import  Resource, Namespace, fields
 
@@ -61,13 +60,13 @@ class Signup(Resource):
 
                 return {
                     "success": "New User signed up",
-                    "new_user": new_user,
+                    "password": saved_user.password,
                     "user_id": saved_user.user_id
                 }, 200
                 
             except Exception as e:
                 return {
                     "error": "Error saving user to database",
-                    "details":e
+                    "details":str(e)
                 }, 400
 

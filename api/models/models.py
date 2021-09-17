@@ -1,12 +1,16 @@
 from os import stat
+import bcrypt
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import backref
-from werkzeug.security import check_password_hash, generate_password_hash
+from bcrypt import hashpw, checkpw
 
 
 from api import db
 
+class Test(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    name = db.Column(db.String(64))
 
 
 class User(db.Model):
@@ -15,14 +19,15 @@ class User(db.Model):
     name = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(50), nullable=False)
     routines = db.relationship('User_Routines', backref='user', lazy=True)
-    password = db.Column(db.String(100), nullable=False)
+    password = db.Column(db.String(128), nullable=False)
 
 
+    ## FIX BCRYPT error
     def __init__(self,data):
         self.name = data.get('name')
         self.user_name = data.get('user_name')
         self.email = data.get('email')
-        self.password = data.get('password')
+        self.password = hashpw(data.get('password').encode('utf-8'), bcrypt.gensalt(16))
 
     def __repr__(self):
         return '<User %r>' % self.name

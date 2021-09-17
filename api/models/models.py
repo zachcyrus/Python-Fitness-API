@@ -57,7 +57,7 @@ class User(db.Model):
         if found_user is None:
             return False
         else:
-            return True
+            return found_user
 
     @staticmethod
     def find_user_by_id(id):

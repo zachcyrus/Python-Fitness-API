@@ -22,7 +22,6 @@ class User(db.Model):
     password = db.Column(db.String(128), nullable=False)
 
 
-    ## FIX BCRYPT error
     def __init__(self,data):
         self.name = data.get('name')
         self.user_name = data.get('user_name')

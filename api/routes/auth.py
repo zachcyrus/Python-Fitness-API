@@ -1,6 +1,6 @@
 from flask import Blueprint, request
 from flask_restx import  Resource, Namespace, fields
-
+from flask_jwt_extended import create_access_token
 from api.models.models import User
 
 # Route for authentication
@@ -70,3 +70,33 @@ class Signup(Resource):
                     "details":str(e)
                 }, 400
 
+# create a login route that returns jwt
+@auth.route('/login')
+class Login(Resource): 
+
+    def post(self): 
+        if('user_name' or 'password') not in request.json:
+            return {
+                "error":"Request must contain either user_name and password"
+            },400
+
+        user_request = request.json
+
+        user_in_db = User.find_username(user_request['user_name'])
+
+        if user_in_db is False:
+            return {
+                "error": "User not found in database"
+            },400
+
+        elif user_in_db.check_password(user_request['password']) is False:
+            return {
+                "error": "Password does not match what's in database"
+            },400
+        else:
+            jwt_token = create_access_token(identity=user_in_db.user_id)
+            return {
+                "access_token": jwt_token
+            }, 200
+
+    

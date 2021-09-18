@@ -3,6 +3,7 @@ import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_jwt_extended import JWTManager
 
 
 db = SQLAlchemy()
@@ -26,6 +27,8 @@ def create_app(testing=False):
 
     db.init_app(app)
     migrate.init_app(app,db)
+    jwt = JWTManager(app)
+
 
 
     # importing api blueprint

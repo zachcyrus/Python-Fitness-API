@@ -1,8 +1,9 @@
 # Route for defining routines endpoints
 
 from operator import add
-from flask import (Blueprint, request)
+from flask import (Blueprint, request, jsonify)
 from flask_restx import  Resource, Namespace, fields
+from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from api.models.models import Routines, User_Routines, User
 from api import db
@@ -52,6 +53,26 @@ class UserRoutines(Resource):
                 "user":user_id,
                 "user_routine":current_user.get_routines()
             },200
+
+@routines.route('/self')
+class UserRoutines(Resource):
+    @jwt_required()
+    def get(self):
+        user_id = get_jwt_identity()
+
+        current_user = User.find_user_by_id(user_id)
+
+        if current_user is False:
+            return {
+                "error": "User with that ID not found"
+            }, 400
+
+        else:
+            return {
+                "user":user_id,
+                "user_routine":current_user.get_routines()
+            },200
+        
 
 #get specific routine with exercises for a particular user 
 @routines.route('/<int:user_id>/<string:routine_name>')

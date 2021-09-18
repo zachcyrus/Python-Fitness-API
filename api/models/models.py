@@ -26,7 +26,7 @@ class User(db.Model):
         self.name = data.get('name')
         self.user_name = data.get('user_name')
         self.email = data.get('email')
-        self.password = hashpw(data.get('password').encode('utf-8'), bcrypt.gensalt(16))
+        self.password = hashpw(data.get('password').encode('utf-8'), bcrypt.gensalt(16)).decode('utf8')
 
     def __repr__(self):
         return '<User %r>' % self.name
@@ -37,7 +37,7 @@ class User(db.Model):
         print('Saving to db')
 
     def check_password(self, submitted_password):
-        return checkpw(submitted_password, self.password)
+        return checkpw(submitted_password.encode('utf-8'), self.password.encode('utf-8'))
 
 
     @staticmethod

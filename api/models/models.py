@@ -8,10 +8,6 @@ from bcrypt import hashpw, checkpw
 
 from api import db
 
-class Test(db.Model):
-    id = db.Column(db.Integer, primary_key = True)
-    name = db.Column(db.String(64))
-
 
 class User(db.Model):
     user_id = db.Column(db.Integer, primary_key=True)
@@ -122,7 +118,6 @@ class Routines(db.Model):
         db.session.add(self)
         db.session.commit()
         print('Saving routine to db')
-        return self.routine_id
 
 
     def delete_routine(self):

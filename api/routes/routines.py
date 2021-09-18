@@ -1,12 +1,11 @@
 # Route for defining routines endpoints
 
 from operator import add
-from flask import (Blueprint, request, jsonify)
+from flask import (request)
 from flask_restx import  Resource, Namespace, fields
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from api.models.models import Routines, User_Routines, User
-from api import db
 
 routines = Namespace('Routines', "Route for managing routines for different users")
 
@@ -18,13 +17,13 @@ def add_routine(req):
 
     try:
         saved_routine = Routines(routine_dict)
-        current_routine_id = saved_routine.save_routine()
-        return current_routine_id
-    except:
-        return 'Error saving'
+        saved_routine.save_routine()
+        return saved_routine.routine_id
+    except Exception as e:
+        return ('Error saving',str(e))
 
 @routines.route('/')
-class Routines(Resource):
+class RoutineTest(Resource):
     def get(self):
         # possibly return all user submitted routines
         try:
@@ -54,6 +53,7 @@ class UserRoutines(Resource):
                 "user_routine":current_user.get_routines()
             },200
 
+#Protected route
 @routines.route('/self')
 class UserRoutines(Resource):
     @jwt_required()
@@ -130,11 +130,11 @@ class AddUserRoutine(Resource):
         else:
             user_routine = request.json
 
-            # Make a routine table 
 
             try:
                 # Saving the routine id from the newly created routine
                 created_routine_id = add_routine(user_routine)
+                print(created_routine_id)
 
                 # Add the routine to the user_routine Table 
                 # 1. Add the routine to the user instance with that id 
@@ -151,7 +151,7 @@ class AddUserRoutine(Resource):
             except Exception as e:
                 return {
                     "error": "Error creating routine table please try again",
-                    "details":e
+                    "details":str(e)
                 },400
 
 

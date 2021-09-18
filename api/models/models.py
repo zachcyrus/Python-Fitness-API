@@ -36,6 +36,10 @@ class User(db.Model):
         db.session.commit()
         print('Saving to db')
 
+    def check_password(self, submitted_password):
+        return checkpw(submitted_password, self.password)
+
+
     @staticmethod
     def select_all():
         user_query = User.query.all()

@@ -25,10 +25,14 @@ exercise_model = exercise.model(
 )
 # Route to add exercise to a particular routine
 
-@exercise.route('/add/<int:user_id>/<string:routine_name>')
+@exercise.route('/add/<string:routine_name>')
 class AddExercise(Resource):
+    @jwt_required()
     @exercise.expect(exercise_model)
-    def post(self,user_id,routine_name):
+    def post(self,routine_name):
+        user_id = get_jwt_identity()
+
+        # Error handling for requests not containing the required information
 
         if request.method != 'POST' or not(request.is_json):
             return {

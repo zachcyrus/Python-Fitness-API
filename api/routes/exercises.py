@@ -34,8 +34,12 @@ exercise_model = exercise.model(
 @exercise.route('/add/<string:routine_name>')
 class AddExercise(Resource):
     @jwt_required()
+    @exercise.marshal_with(exercise_model)
     @exercise.expect(exercise_model)
     def post(self,routine_name):
+        '''
+        Endpoint to add an exercise to a particular routine
+        '''
         user_id = get_jwt_identity()
 
         # Error handling for requests not containing the required information

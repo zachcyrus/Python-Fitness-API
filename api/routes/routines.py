@@ -38,7 +38,8 @@ class RoutineTest(Resource):
 # get routines for signed in user 
 # works
 # Protected route
-@routines.route('/self')
+@routines.route('/self', doc={"description": "Alias for /my-resource/<id>"}
+)
 class UserRoutines(Resource):
     @jwt_required()
     def get(self):

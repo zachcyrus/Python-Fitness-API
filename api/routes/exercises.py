@@ -3,6 +3,7 @@
 from flask import (Blueprint, request)
 from api.models.models import User, Routine_Exercises, Exercises
 from flask_restx import  Resource, Namespace, fields
+from flask_jwt_extended import jwt_required, get_jwt_identity
 
 
 exercise = Namespace('Exercise', 'Exercises route for users')
@@ -22,13 +23,6 @@ exercise_model = exercise.model(
         )
     }
 )
-
-@exercise.route('/')
-class AllExercises(Resource):
-    def get(self):
-        return {"all_exercises":"testing"},200
-    
-
 # Route to add exercise to a particular routine
 
 @exercise.route('/add/<int:user_id>/<string:routine_name>')

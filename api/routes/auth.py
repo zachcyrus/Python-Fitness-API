@@ -1,11 +1,12 @@
 from flask import Blueprint, request
 from flask_restx import  Resource, Namespace, fields
 from flask_jwt_extended import create_access_token
+from flask_restx.marshalling import marshal_with
 from api.models.models import User
 
 # Route for authentication
 
-auth = Namespace('Auth', 'Authentication route for users')
+auth = Namespace('Auth', 'Authentication route for to signup and login')
 
 user_model = auth.model(
     "New User Model",
@@ -33,11 +34,47 @@ user_model = auth.model(
     }
 )
 
+returned_user_model = auth.model(
+    "Successful User Signup",
+    {
+        "success": fields.String(default="New User signed up"),
+        "password": fields.String,
+        "user_id": fields.Integer
+    }
+)
+
+login_success_model = auth.model(
+    "Successful User Login",
+    {
+        "access_token": fields.String
+    }
+)
+
+login_payload = auth.model(
+    "User model for logging in",
+    {
+        "user_name": fields.String(
+            required=True,
+            description='Username selected',
+            help="Username cannot be blank"
+        ),
+        "password": fields.String(
+            required=True,
+            description='Password for account',
+            help="Every user needs a password"
+        ),
+    }
+)
+
 @auth.route('/signup')
 class Signup(Resource):
-
+    
+    @auth.marshal_with(returned_user_model)
     @auth.expect(user_model)
     def post(self):
+        '''
+        Route for user signup 
+        '''
         # expect a POST request with a response body containing username, password, and email
         if request.method != 'POST' or not(request.is_json):
             return {
@@ -73,8 +110,12 @@ class Signup(Resource):
 # create a login route that returns jwt
 @auth.route('/login')
 class Login(Resource): 
-
-    def post(self): 
+    @auth.expect(login_payload)
+    @auth.marshal_with(login_success_model)
+    def post(self):
+        '''
+        Login route that returns jwt on authentication
+        '''
         if('user_name' or 'password') not in request.json:
             return {
                 "error":"Request must contain either user_name and password"

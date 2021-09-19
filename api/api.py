@@ -6,13 +6,13 @@ authorizations = {
     'Bearer': {
         'type': 'apiKey',
         'in': 'header',
-        'name': 'Authorization Bearer',
+        'name': 'Authorization',
         'description': "Type in the *'Value'* input box below: **'Bearer &lt;JWT&gt;'**, where JWT is the token"
     }
 }
 
 api_bp = Blueprint('api', __name__)
-api = Api(api_bp,title='Python Fitness API', description="Python API meant to show users different endpoints")
+api = Api(api_bp,title='Python Fitness API', description="Python API meant to show users different endpoints", authorizations=authorizations)
 
 
 # Adding routes

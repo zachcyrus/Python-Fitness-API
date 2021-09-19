@@ -4,12 +4,12 @@ from operator import add
 from flask import (request)
 from flask_restx import  Resource, Namespace, fields
 from flask_jwt_extended import jwt_required, get_jwt_identity
-
+#from api.api import authorizations
 from api.models.models import Routines, User_Routines, User
 
 from api.routes.exercises import exercise_model
 
-routines = Namespace('Routines', "Route for managing routines for different users")
+routines = Namespace('Routines', "Route for managing routines for different users", security="Bearer")
 
 def add_routine(req):
     routine_dict = {
@@ -95,6 +95,7 @@ class RoutineTest(Resource):
 class UserRoutines(Resource):
     @jwt_required()
     @routines.marshal_with(all_user_routines_model)
+    @routines.doc(security="Bearer")
     def get(self):
         '''Route to retrieve all routines of signed in user'''
         user_id = get_jwt_identity()
@@ -121,6 +122,7 @@ class UserRoutines(Resource):
 class UserRoutineExercises(Resource): 
     @jwt_required()
     @routines.marshal_with(user_routine_exercises_model)
+    @routines.doc(security="Bearer")
     def get(self, routine_name):
         '''
         Route to retrieve all exercises of a specific routine
@@ -159,6 +161,7 @@ class AddUserRoutine(Resource):
     @jwt_required()
     @routines.expect(routine_to_add_model)
     @routines.marshal_with(success_added_routine_model)
+    @routines.doc(security="Bearer")
     def post(self):
         '''
         Route to add a routine to signed in user
@@ -210,10 +213,10 @@ class AddUserRoutine(Resource):
 
 
 @routines.route('/remove/<string:routine_name>')
-
 class RemoveUserRoutine(Resource):
     @jwt_required()
     @routines.marshal_with(successfully_deleted_routine_model)
+    @routines.doc(security="Bearer")
     def delete(self,routine_name):
         '''
         Route for deleting a user routine

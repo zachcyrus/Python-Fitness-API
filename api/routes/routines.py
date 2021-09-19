@@ -34,25 +34,8 @@ class RoutineTest(Resource):
             return {
                 "error": "Error occurred retrieving data from DB"
             }, 400
-
+unnecessary
 #get routines for specific user 
-@routines.route('/<int:user_id>')
-class UserRoutines(Resource):
-
-    def get(self,user_id):
-        current_user = User.find_user_by_id(user_id)
-
-        if current_user is False:
-            return {
-                "error": "User with that ID not found"
-            }, 400
-
-        else:
-            return {
-                "user":user_id,
-                "user_routine":current_user.get_routines()
-            },200
-
 #Protected route
 @routines.route('/self')
 class UserRoutines(Resource):

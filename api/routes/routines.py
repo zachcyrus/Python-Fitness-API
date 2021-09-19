@@ -7,6 +7,8 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from api.models.models import Routines, User_Routines, User
 
+from api.routes.exercises import exercise_model
+
 routines = Namespace('Routines', "Route for managing routines for different users")
 
 def add_routine(req):
@@ -22,7 +24,49 @@ def add_routine(req):
     except Exception as e:
         return ('Error saving',str(e))
 
+# Models for data to be expected by user as well as returned by API
+all_user_routines_model = routines.model(
+    "Retrieved User Routines",
+    {
+        "user_id": fields.Integer,
+        "user_routine": fields.List(fields.String)
+    }
+)
+
+user_routine_exercises_model = routines.model(
+    "All exercises in a signed in users specific routine",
+    {
+        "routine_name": fields.String,
+        "routine_description": fields.String,
+        "exercises_list": fields.List(fields.Nested(exercise_model))
+    }
+)
+
+routine_to_add_model = routines.model(
+    "Expected data model for routine",
+    {
+        "routine_description": fields.String,
+        "routine_name": fields.String
+    }
+)
+
+success_added_routine_model = routines.model(
+    "Data model for when a user successfully adds a routine",
+    {
+        "success": fields.String,
+        "routine": fields.Nested(routine_to_add_model)
+    }
+)
+
+successfully_deleted_routine_model = routines.model(
+    "Response model for when a routine is deleted",
+    {
+        "success": fields.String
+    }
+)
+
 @routines.route('/')
+@routines.hide
 class RoutineTest(Resource):
     def get(self):
         # possibly return all user submitted routines
@@ -38,11 +82,12 @@ class RoutineTest(Resource):
 # get routines for signed in user 
 # works
 # Protected route
-@routines.route('/self', doc={"description": "Alias for /my-resource/<id>"}
-)
+@routines.route('/self')
 class UserRoutines(Resource):
     @jwt_required()
+    @routines.marshal_with(all_user_routines_model)
     def get(self):
+        '''Route to retrieve all routines of signed in user'''
         user_id = get_jwt_identity()
 
         current_user = User.find_user_by_id(user_id)
@@ -64,7 +109,11 @@ class UserRoutines(Resource):
 @routines.route('/<string:routine_name>')
 class UserRoutineExercises(Resource): 
     @jwt_required()
+    @routines.marshal_with(user_routine_exercises_model)
     def get(self, routine_name):
+        '''
+        Route to retrieve all exercises of a specific routine
+        '''
         user_id = get_jwt_identity()
         current_user = User.find_user_by_id(user_id)
 
@@ -92,12 +141,17 @@ class UserRoutineExercises(Resource):
             }, 200
 
 
-#Route for addding a routine to a particular user
+# Route for addding a routine to a particular user
 # Tested and works as intended
 @routines.route('/add')
 class AddUserRoutine(Resource):
     @jwt_required()
+    @routines.expect(routine_to_add_model)
+    @routines.marshal_with(success_added_routine_model)
     def post(self):
+        '''
+        Route to add a routine to signed in user
+        '''
         user_id = get_jwt_identity()
         if request.method != 'POST' or not(request.is_json):
             return {
@@ -124,7 +178,6 @@ class AddUserRoutine(Resource):
             try:
                 # Saving the routine id from the newly created routine
                 created_routine_id = add_routine(user_routine)
-                print(created_routine_id)
 
                 # Add the routine to the user_routine Table 
                 # 1. Add the routine to the user instance with that id 
@@ -146,9 +199,14 @@ class AddUserRoutine(Resource):
 
 
 @routines.route('/remove/<string:routine_name>')
+
 class RemoveUserRoutine(Resource):
     @jwt_required()
+    @routines.marshal_with(successfully_deleted_routine_model)
     def delete(self,routine_name):
+        '''
+        Route for deleting a user routine
+        '''
         user_id = get_jwt_identity()
         if request.method != "DELETE":
             return {

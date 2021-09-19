@@ -1,5 +1,5 @@
 # Route for defining routines endpoints
-
+# All routes tested and working as intended
 from operator import add
 from flask import (request)
 from flask_restx import  Resource, Namespace, fields
@@ -35,8 +35,9 @@ class RoutineTest(Resource):
                 "error": "Error occurred retrieving data from DB"
             }, 400
 
-#get routines for specific user 
-#Protected route
+# get routines for signed in user 
+# works
+# Protected route
 @routines.route('/self')
 class UserRoutines(Resource):
     @jwt_required()
@@ -57,10 +58,13 @@ class UserRoutines(Resource):
             },200
         
 
-#get specific routine with exercises for a particular user 
-@routines.route('/<int:user_id>/<string:routine_name>')
+# get specific routine with exercises for a particular user 
+# Tested and works as intended
+@routines.route('/<string:routine_name>')
 class UserRoutineExercises(Resource): 
-    def get(self,user_id, routine_name):
+    @jwt_required()
+    def get(self, routine_name):
+        user_id = get_jwt_identity()
         current_user = User.find_user_by_id(user_id)
 
         if current_user is False:
@@ -88,10 +92,12 @@ class UserRoutineExercises(Resource):
 
 
 #Route for addding a routine to a particular user
-@routines.route('/add/<int:user_id>', methods=["POST"])
+# Tested and works as intended
+@routines.route('/add')
 class AddUserRoutine(Resource):
-
-    def post(self,user_id):
+    @jwt_required()
+    def post(self):
+        user_id = get_jwt_identity()
         if request.method != 'POST' or not(request.is_json):
             return {
                 "error": "Request must be a POST method, and request must contain JSON"
@@ -138,9 +144,11 @@ class AddUserRoutine(Resource):
                 },400
 
 
-@routines.route('/remove/<int:user_id>/<string:routine_name>')
+@routines.route('/remove/<string:routine_name>')
 class RemoveUserRoutine(Resource):
-    def delete(self,user_id,routine_name):
+    @jwt_required()
+    def delete(self,routine_name):
+        user_id = get_jwt_identity()
         if request.method != "DELETE":
             return {
                 "error": "This is a delete only route"

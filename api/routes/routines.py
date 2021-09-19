@@ -25,11 +25,20 @@ def add_routine(req):
         return ('Error saving',str(e))
 
 # Models for data to be expected by user as well as returned by API
+model_for_returned_routine = routines.model(
+    "Returned Routine Model",
+    {
+        "routine_id": fields.Integer,
+        "routine_name":fields.String,
+        "routine_description": fields.String
+    }
+)
+
 all_user_routines_model = routines.model(
     "Retrieved User Routines",
     {
         "user_id": fields.Integer,
-        "user_routine": fields.List(fields.String)
+        "user_routine": fields.List(fields.Nested(model_for_returned_routine))
     }
 )
 
@@ -90,6 +99,8 @@ class UserRoutines(Resource):
         '''Route to retrieve all routines of signed in user'''
         user_id = get_jwt_identity()
 
+        print(type(user_id))
+
         current_user = User.find_user_by_id(user_id)
 
         if current_user is False:
@@ -99,7 +110,7 @@ class UserRoutines(Resource):
 
         else:
             return {
-                "user":user_id,
+                "user_id":current_user.user_id,
                 "user_routine":current_user.get_routines()
             },200
         

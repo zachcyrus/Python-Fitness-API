@@ -36,6 +36,7 @@ class AddExercise(Resource):
     @jwt_required()
     @exercise.marshal_with(exercise_model)
     @exercise.expect(exercise_model)
+    @exercise.doc(security="Bearer")
     def post(self,routine_name):
         '''
         Endpoint to add an exercise to a particular routine

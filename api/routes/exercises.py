@@ -20,7 +20,13 @@ exercise_model = exercise.model(
             required=True,
             description='Description of exercise',
             help="Description cannot be empty"
-        )
+        ),
+        "reps": fields.Integer(
+            required=True,
+            description='Reps required for the exercise',
+            help="Reps must be an integer no half reps bro"
+        ),
+        
     }
 )
 # Route to add exercise to a particular routine
@@ -39,9 +45,9 @@ class AddExercise(Resource):
                 "error": "Request must be a POST method, and request body must contain JSON"
             }, 400
 
-        elif ('exercise_name' or 'exercise_description') not in request.json:
+        elif ('exercise_name' or 'exercise_description' or 'reps') not in request.json:
             return {
-                "error": "Request must contain exercise_name and exercise_description within the body"
+                "error": "Request must contain reps, exercise_name, and exercise_description within the body"
             }, 400
 
         elif User.find_user_by_id(user_id) is False:
@@ -67,13 +73,15 @@ class AddExercise(Resource):
             try:
                 exercise_to_add = Exercises(request.json)
 
+                exercise_reps = request.json.get("reps")
+
                 exercise_to_add.save_exercise()
 
                 added_exercise_id = exercise_to_add.exercise_id
 
                 # Now to save exercise to user_routine table
 
-                new_routine_exercise = Routine_Exercises(reps=10,exercise_id=added_exercise_id,routine_id=current_user_routine.routine_id)
+                new_routine_exercise = Routine_Exercises(reps=exercise_reps,exercise_id=added_exercise_id,routine_id=current_user_routine.routine_id)
 
                 new_routine_exercise.save_routine_exercises()
 

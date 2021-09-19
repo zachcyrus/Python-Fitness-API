@@ -34,7 +34,7 @@ class RoutineTest(Resource):
             return {
                 "error": "Error occurred retrieving data from DB"
             }, 400
-unnecessary
+
 #get routines for specific user 
 #Protected route
 @routines.route('/self')

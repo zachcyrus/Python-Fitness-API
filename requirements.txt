@@ -2,8 +2,11 @@ alembic==1.6.5
 aniso8601==9.0.1
 attrs==21.2.0
 autopep8==1.5.7
+bcrypt==3.2.0
+cffi==1.14.6
 click==8.0.1
 Flask==2.0.1
+Flask-JWT-Extended==4.3.0
 Flask-Migrate==3.1.0
 flask-restx==0.5.1
 Flask-SQLAlchemy==2.5.1
@@ -20,6 +23,8 @@ psycopg2==2.9.1
 psycopg2-binary==2.9.1
 py==1.10.0
 pycodestyle==2.7.0
+pycparser==2.20
+PyJWT==2.1.0
 pyparsing==2.4.7
 pyrsistent==0.18.0
 pytest==6.2.4

@@ -11,6 +11,7 @@ class Config(object):
 class DevelopmentConfig(Config):
     ENV = "development"
     DEVELOPMENT = True
+    JWT_SECRET_KEY = os.environ['JWT_SECRET_KEY']
 
 class ProductionConfig(Config):
     ENV = "production"

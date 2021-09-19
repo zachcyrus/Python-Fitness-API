@@ -1,12 +1,12 @@
 from os import stat
+import bcrypt
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import backref
-from werkzeug.security import check_password_hash, generate_password_hash
+from bcrypt import hashpw, checkpw
 
 
 from api import db
-
 
 
 class User(db.Model):
@@ -15,14 +15,14 @@ class User(db.Model):
     name = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(50), nullable=False)
     routines = db.relationship('User_Routines', backref='user', lazy=True)
-    password = db.Column(db.String(100), nullable=False)
+    password = db.Column(db.String(128), nullable=False)
 
 
     def __init__(self,data):
         self.name = data.get('name')
         self.user_name = data.get('user_name')
         self.email = data.get('email')
-        self.password = data.get('password')
+        self.password = hashpw(data.get('password').encode('utf-8'), bcrypt.gensalt(16)).decode('utf8')
 
     def __repr__(self):
         return '<User %r>' % self.name
@@ -31,6 +31,10 @@ class User(db.Model):
         db.session.add(self)
         db.session.commit()
         print('Saving to db')
+
+    def check_password(self, submitted_password):
+        return checkpw(submitted_password.encode('utf-8'), self.password.encode('utf-8'))
+
 
     @staticmethod
     def select_all():
@@ -53,7 +57,7 @@ class User(db.Model):
         if found_user is None:
             return False
         else:
-            return True
+            return found_user
 
     @staticmethod
     def find_user_by_id(id):
@@ -114,7 +118,6 @@ class Routines(db.Model):
         db.session.add(self)
         db.session.commit()
         print('Saving routine to db')
-        return self.routine_id
 
 
     def delete_routine(self):

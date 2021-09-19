@@ -3,6 +3,8 @@ import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_jwt_extended import JWTManager
+
 
 db = SQLAlchemy()
 migrate = Migrate()
@@ -25,23 +27,16 @@ def create_app(testing=False):
 
     db.init_app(app)
     migrate.init_app(app,db)
+    jwt = JWTManager(app)
+
+
+
+    # importing api blueprint
+
+    from api.api import api_bp
+    app.register_blueprint(api_bp, url_prefix='/api')
 
 
     
-
-    # Importing modules
-    from .routes import exercises, routines, user, auth
-
-    # Registering blueprint routes
-    app.register_blueprint(user.bp)
-    app.register_blueprint(exercises.bp)
-    app.register_blueprint(routines.bp)
-    app.register_blueprint(auth.bp)
-
-
-    # Index route which will return name of API
-    @app.route('/')
-    def hello():
-        return 'Python Fitness API'
 
     return app

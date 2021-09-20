@@ -1,6 +1,7 @@
 venv/
 
 .env
+pytest.ini
 
 *.pyc
 __pycache__/

@@ -13,12 +13,13 @@ migrate = Migrate()
 def create_app(testing=False):
     app = Flask(__name__)
 
-    # Logic for handling configuration
-    if app.config["ENV"] == 'production':
-        app.config.from_object("config.ProductionConfig")
-
-    elif app.config["ENV"] == 'testing':
+    if testing is True or app.config["ENV"] == 'testing':
         app.config.from_object("config.TestingConfig")
+
+
+    # Logic for handling configuration
+    elif app.config["ENV"] == 'production':
+        app.config.from_object("config.ProductionConfig")
 
     else:
         app.config.from_object("config.DevelopmentConfig")

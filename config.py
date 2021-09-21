@@ -1,17 +1,14 @@
 import os
 
-if os.environ['LOCAL_DB_URI'] is None:
-    os.environ['LOCAL_DB_URI'] = 'fakeurl'
-
 class Config(object):
     DEBUG = False
     TESTING = False
-    SQLALCHEMY_DATABASE_URI = os.environ['LOCAL_DB_URI']
-    JWT_SECRET_KEY = os.environ['JWT_SECRET_KEY']
+    JWT_SECRET_KEY = os.environ['JWT_SECRET_KEY'] or 'null'
 
 class DevelopmentConfig(Config):
     ENV = "development"
     DEVELOPMENT = True
+    SQLALCHEMY_DATABASE_URI = os.getenv('LOCAL_DB_URI') or 'null'
     
 
 class ProductionConfig(Config):
@@ -21,4 +18,5 @@ class TestingConfig(Config):
     ENV = 'testing'
     TESTING = True
     # Enter DB credentials later when it is implemented
-    SQLALCHEMY_DATABASE_URI = os.environ['TESTING_DB_URI']
+    SQLALCHEMY_DATABASE_URI = os.environ['TESTING_DB_URI'] or 'null'
+    

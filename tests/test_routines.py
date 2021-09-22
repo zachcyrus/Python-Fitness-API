@@ -2,6 +2,7 @@
 
 import pytest
 import json
+from flask import jsonify
 
 @pytest.fixture(scope='class')
 def bearer_token(client):
@@ -24,7 +25,7 @@ def bearer_token(client):
     
 
 class TestRoutineRoutes:
-    def test_self_endpoint(self,client, bearer_token):
+    def test_get_routine(self,client, bearer_token):
         '''Test that the GET self endpoint works, as well as a newly registered user has no routines assigned to them'''
 
         response = client.get(
@@ -39,5 +40,29 @@ class TestRoutineRoutes:
         assert len(response_data["user_routine"]) == 0
 
         assert type(response_data["user_id"]) is int
+
+    def test_add_routine(self,client,bearer_token):
+        '''Test that the add endpoint works to add a routine to signed in user'''
+
+        response = client.post(
+            '/api/routines/add',
+            headers = bearer_token,
+            data = json.dumps({
+                "routine_description": "Example routine description",
+                "routine_name": "Example name of a routine"
+            }),
+            content_type='application/json'
+        )
+        
+        response_data = json.loads(response.data.decode()) 
+
+        assert response.status_code == 200
+
+        assert 'routine' and 'success' in response_data
+        
+        assert type(response_data['routine']) is dict
+
+
+
 
 

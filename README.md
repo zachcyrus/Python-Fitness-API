@@ -38,7 +38,20 @@ $ pip install requirement.txt
     $ flask run
     ```
 ## Running a test
-1. In root of project run the below command to run tests (add -s flag to show print statements):
+1. To run tests on this application first create a pytest.ini file. The reason being this project utilizes pytest-env in order to easily feed env variables in a testing environment.
+    ```
+    # In root of repo
+    $ touch pytest.ini
+    ```
+2. Within the pytest.ini file pass in env variables with the following format change some_string to the appropriate values based on your system.
+```
+[pytest]
+env =
+    HOME=~/tmp
+    TESTING_DB_URI=some_string
+    JWT_SECRET_KEY=some_string
+```
+3. In root of project run the below command to run tests (add -s flag to show print statements):
    ```
    $ python3 -m pytest
    ```

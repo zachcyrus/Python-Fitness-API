@@ -39,6 +39,6 @@ $ pip install requirement.txt
 ## Running a test
 1. In root of project run the below command to run tests (add -s flag to show print statements):
    ```
-   $ python -m pytest
+   $ python3 -m pytest
    ```
    

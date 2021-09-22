@@ -94,7 +94,7 @@ class RoutineTest(Resource):
 @routines.route('/self')
 class UserRoutines(Resource):
     @jwt_required()
-    @routines.marshal_with(all_user_routines_model)
+    @routines.response(200, 'Success', all_user_routines_model)
     @routines.doc(security="Bearer")
     def get(self):
         '''Route to retrieve all routines of signed in user'''
@@ -121,7 +121,7 @@ class UserRoutines(Resource):
 @routines.route('/<string:routine_name>')
 class UserRoutineExercises(Resource): 
     @jwt_required()
-    @routines.marshal_with(user_routine_exercises_model)
+    @routines.response(200, 'Success', user_routine_exercises_model)
     @routines.doc(security="Bearer")
     def get(self, routine_name):
         '''
@@ -160,7 +160,7 @@ class UserRoutineExercises(Resource):
 class AddUserRoutine(Resource):
     @jwt_required()
     @routines.expect(routine_to_add_model)
-    @routines.marshal_with(success_added_routine_model)
+    @routines.response(200, 'Success', success_added_routine_model)
     @routines.doc(security="Bearer")
     def post(self):
         '''
@@ -215,7 +215,7 @@ class AddUserRoutine(Resource):
 @routines.route('/remove/<string:routine_name>')
 class RemoveUserRoutine(Resource):
     @jwt_required()
-    @routines.marshal_with(successfully_deleted_routine_model)
+    @routines.response(200, 'Success', successfully_deleted_routine_model)
     @routines.doc(security="Bearer")
     def delete(self,routine_name):
         '''

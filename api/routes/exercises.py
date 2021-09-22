@@ -16,9 +16,34 @@ exercise_model = exercise.model(
             description='Name of exercise',
             help="Name cannot be blank"
         ),
+
         "exercise_description": fields.String(
             required=True,
             description='Description of exercise',
+            help="Description cannot be empty"
+        ),
+        
+        "reps": fields.Integer(
+            required=True,
+            description='Reps required for the exercise',
+            help="Reps must be an integer no half reps bro"
+        ),
+        
+    }
+)
+
+returned_exercise_model = exercise.model(
+    "Returned Exercise Model",
+    {
+        "exercise_name": fields.String(
+            required=True,
+            description='Name of exercise',
+            help="Name cannot be blank"
+        ),
+        
+        "routine_name": fields.String(
+            required=True,
+            description='Name of routine',
             help="Description cannot be empty"
         ),
         "reps": fields.Integer(
@@ -29,12 +54,14 @@ exercise_model = exercise.model(
         
     }
 )
+
+
 # Route to add exercise to a particular routine
 
 @exercise.route('/add/<string:routine_name>')
 class AddExercise(Resource):
     @jwt_required()
-    @exercise.marshal_with(exercise_model)
+    @exercise.response(200, 'Success', returned_exercise_model)
     @exercise.expect(exercise_model)
     @exercise.doc(security="Bearer")
     def post(self,routine_name):

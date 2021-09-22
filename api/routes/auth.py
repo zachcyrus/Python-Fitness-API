@@ -70,7 +70,7 @@ login_payload = auth.model(
 class Signup(Resource):
     
     @auth.marshal_with(returned_user_model)
-    @auth.expect(user_model)
+    @auth.response(200, "Success", user_model)
     def post(self):
         '''
         Route for user signup 
@@ -111,7 +111,7 @@ class Signup(Resource):
 @auth.route('/login')
 class Login(Resource): 
     @auth.expect(login_payload)
-    @auth.marshal_with(login_success_model)
+    @auth.response(200, "Success", login_success_model)
     def post(self):
         '''
         Login route that returns jwt on authentication

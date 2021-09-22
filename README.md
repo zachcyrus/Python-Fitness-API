@@ -25,6 +25,7 @@ This project will attempt to go through multiple stages.
     DEBUG=True
     FLASK_ENV=development
     FLASK_APP=api
+    LOCAL_DB_URI=the_uri_for_your_postgresdb
     ```
 2. Set up a python virtual environment in the root of the cloned repository.
 ```

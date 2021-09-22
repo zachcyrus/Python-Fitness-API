@@ -1,19 +1,7 @@
 import pytest
 
-from unittest import TestCase
 from api import create_app, db as _db
 import json
-
-@pytest.fixture(scope='module')
-def client():
-    app = create_app(testing=True)
-    
-    with app.app_context():
-        with app.test_client() as client:
-            _db.create_all()
-            yield client
-            _db.session.remove()
-            _db.drop_all()
 
 class TestAuthRoute:
     def test_signup_route(self,client):

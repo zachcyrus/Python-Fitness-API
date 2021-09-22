@@ -69,8 +69,8 @@ login_payload = auth.model(
 @auth.route('/signup')
 class Signup(Resource):
     
-    @auth.marshal_with(returned_user_model)
-    @auth.response(200, "Success", user_model)
+    @auth.expect(user_model)
+    @auth.response(200, "Success", returned_user_model)
     def post(self):
         '''
         Route for user signup 

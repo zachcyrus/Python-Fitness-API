@@ -56,4 +56,8 @@ class TestAuthRoute:
 
         assert login_response.status_code == 200
 
+        login_response_data = json.loads(login_response.data.decode())
+
+        assert type(login_response_data["access_token"]) is str and len(login_response_data["access_token"]) > 0
+
         

@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask
+from flask import Flask, redirect
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_jwt_extended import JWTManager
@@ -36,6 +36,10 @@ def create_app(testing=False):
 
     from api.api import api_bp
     app.register_blueprint(api_bp, url_prefix='/api')
+
+    @app.route("/")
+    def index():
+        return redirect('/api')
 
 
     

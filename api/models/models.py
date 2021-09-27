@@ -1,5 +1,6 @@
 from os import stat
 import bcrypt
+import datetime
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import backref
@@ -237,6 +238,7 @@ class Routine_Exercises(db.Model):
 
 # This table is meant to show the exercises for a particular routine chosen by a user.
 class User_Routine_Exercises(db.Model):
+    __tablename__ = 'user_routine_exercises'
     personal_routine_exercise_id = db.Column(db.Integer(), primary_key=True)
     user_routine_id = db.Column(db.Integer(), db.ForeignKey('user_routines.user_routine_id'))
     routine_exercise_id = db.Column(db.Integer(), db.ForeignKey('routine_exercises.routine_exercise_id'))
@@ -245,3 +247,15 @@ class User_Routine_Exercises(db.Model):
         db.session.add(self)
         db.session.commit()
         print('Saving user routine exercises to db')
+
+class Logs(db.model):
+    # Need determine best way to save date time
+    date_completed = db.Column(db.DateTime(), default=datetime.datetime.now().isoformat())
+    weight = db.Column(db.Float(), nullable=True)
+    reps = db.Column(db.Integer(), nullable=False)
+    personal_routine_id = db.Column(db.Integer(), db.ForeignKey('user_routine_exercises'))
+
+    def save_logs(self):
+        db.session.add(self)
+        db.session.commit()
+        print('Saving logs to database')

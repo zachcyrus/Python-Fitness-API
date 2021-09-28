@@ -1,3 +1,4 @@
+from logging import log
 from os import path
 from flask import Blueprint
 from flask_restx import Api
@@ -25,3 +26,6 @@ api.add_namespace(exercise,path='/exercise')
 
 from api.routes.routines import routines
 api.add_namespace(routines,path='/routines')
+
+from api.routes.log_entry import log_entry
+api.add_namespace(log_entry,path='/logs')

@@ -248,7 +248,7 @@ class User_Routine_Exercises(db.Model):
         db.session.commit()
         print('Saving user routine exercises to db')
 
-class Logs(db.model):
+class Logs(db.Model):
     # Need determine best way to save date time
     date_completed = db.Column(db.DateTime(), default=datetime.datetime.now().isoformat())
     weight = db.Column(db.Float(), nullable=True)

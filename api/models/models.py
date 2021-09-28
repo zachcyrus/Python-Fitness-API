@@ -254,7 +254,7 @@ class Logs(db.Model):
     date_completed = db.Column(db.DateTime(), default=datetime.datetime.now().isoformat())
     weight = db.Column(db.Float(), nullable=True)
     reps = db.Column(db.Integer(), nullable=False)
-    personal_routine_id = db.Column(db.Integer(), db.ForeignKey('user_routine_exercises'))
+    personal_routine_id = db.Column(db.Integer(), db.ForeignKey('user_routine_exercises.personal_routine_exercise_id'))
 
     def save_logs(self):
         db.session.add(self)

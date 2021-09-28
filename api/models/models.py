@@ -250,6 +250,7 @@ class User_Routine_Exercises(db.Model):
 
 class Logs(db.Model):
     # Need determine best way to save date time
+    log_id = db.Column(db.Integer, primary_key=True)
     date_completed = db.Column(db.DateTime(), default=datetime.datetime.now().isoformat())
     weight = db.Column(db.Float(), nullable=True)
     reps = db.Column(db.Integer(), nullable=False)

@@ -157,7 +157,8 @@ class Routines(db.Model):
             exercise_list.append({
                 "exercise_name": exercise_row.exercise_name,
                 "exercise_description": exercise_row.exercise_description,
-                "reps": exercise.reps
+                "reps": exercise.reps,
+                "exercise_id": exercise.exercise_id
 
             })
 

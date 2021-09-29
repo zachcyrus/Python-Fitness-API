@@ -231,7 +231,7 @@ class Routine_Exercises(db.Model):
     exercise_id = db.Column(db.Integer(), db.ForeignKey('exercises.exercise_id'), nullable=False)
     routine_id = db.Column(db.Integer(), db.ForeignKey('routines.routine_id'), nullable=False) 
     user_routine_exercises = db.relationship('User_Routine_Exercises', backref='exercises', lazy=True)
-    log_data = db.relationship('logs', backref='logs',lazy=True)
+    log_data = db.relationship('Logs', backref='logs',lazy=True)
 
     def save_routine_exercises(self):
         db.session.add(self)

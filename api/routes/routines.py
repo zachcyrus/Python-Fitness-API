@@ -100,8 +100,6 @@ class UserRoutines(Resource):
         '''Route to retrieve all routines of signed in user'''
         user_id = get_jwt_identity()
 
-        print(type(user_id))
-
         current_user = User.find_user_by_id(user_id)
 
         if current_user is False:

@@ -230,6 +230,7 @@ class Routine_Exercises(db.Model):
     exercise_id = db.Column(db.Integer(), db.ForeignKey('exercises.exercise_id'), nullable=False)
     routine_id = db.Column(db.Integer(), db.ForeignKey('routines.routine_id'), nullable=False) 
     user_routine_exercises = db.relationship('User_Routine_Exercises', backref='exercises', lazy=True)
+    log_data = db.relationship('logs', backref='logs',lazy=True)
 
     def save_routine_exercises(self):
         db.session.add(self)
@@ -254,7 +255,7 @@ class Logs(db.Model):
     date_completed = db.Column(db.DateTime(), default=datetime.datetime.now().isoformat())
     weight = db.Column(db.Float(), nullable=True)
     reps = db.Column(db.Integer(), nullable=False)
-    personal_routine_id = db.Column(db.Integer(), db.ForeignKey('user_routine_exercises.personal_routine_exercise_id'))
+    routine_exercise_id = db.Column(db.Integer(), db.ForeignKey('routine_exercises.routine_exercise_id'))
 
     def save_logs(self):
         db.session.add(self)

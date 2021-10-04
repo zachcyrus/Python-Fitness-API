@@ -55,19 +55,25 @@ class LogEntry(Resource):
         
         ## Route should take in an array of completed exercises with the required input: weight amount, reps, personal_routine id
         ## Assume request is an array 
-         # 'data': [
-        #     'exercise_name:{
-        #         "weight": 100,
-        #         "reps": 6,
-        #     },
-        # ]
+        # {
+        #     "data": [
+        #         {
+        #             "exercise_name": "Bicep Curl",
+        #             "weight": 100,
+        #             "reps": 8
+        #         },
+        #         ...
+        #     ]
+        # }
         workout_data = request.json["data"]
 
         for exercise in workout_data:
             # If submitted exercise name is in retrieved routine
-            if any(exercise.exercise_name in retrieved_exercise_name for retrieved_exercise_name in exercises_in_routine):
+            print(exercise)
+            if any(retrieved_exercise["exercise_name"] == exercise["exercise_name"] for retrieved_exercise in exercises_in_routine):
+                
                 try:
-                    log_input = Logs(weight=exercise["weight"], reps=exercise["reps"], routine_exercise_id=user_routine.routine_id)
+                    log_input = Logs(weight=exercise["weight"], reps=exercise["reps"], routine_exercise_id=retrieved_exercise["routine_exercise_id"])
                     log_input.save_logs()
                 except Exception as e:
                     return {

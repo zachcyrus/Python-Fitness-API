@@ -158,7 +158,8 @@ class Routines(db.Model):
                 "exercise_name": exercise_row.exercise_name,
                 "exercise_description": exercise_row.exercise_description,
                 "reps": exercise.reps,
-                "exercise_id": exercise.exercise_id
+                "exercise_id": exercise.exercise_id,
+                "routine_exercise_id": exercise.routine_exercise_id
 
             })
 

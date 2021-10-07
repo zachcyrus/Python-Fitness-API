@@ -60,7 +60,7 @@ env =
 ## Thought process while building
 
 1. To first start creating this application I came up with a potential db schema. 
-    ![Database schema](fitness_api_schema.png)
+    ![Database schema](updated_fitness_api.png)
 
 2. Next I searched for a python library to allow me to create tables and perform queries. This led me to [Python Flask SQL Alchemy](https://flask-sqlalchemy.palletsprojects.com/en/2.x/)
 Which is an extension of flask that allows for SQLAlchemy support thus allowing for object relational mapping with a SQL database. 

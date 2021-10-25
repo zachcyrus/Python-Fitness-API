@@ -31,7 +31,7 @@ This project will attempt to go through multiple stages.
 ```
 $ python3 -m venv venv
 $ . venv/bin/activate
-$ pip install requirement.txt
+$ pip install requirementa.txt
 ```
 
 3. Now in the terminal enter:
